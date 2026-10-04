@@ -1,0 +1,9 @@
+,mean balanced accuracy,mean balanced accuracy,mean balanced accuracy,gap to oracle,gap to oracle,gap to oracle
+noise,white,pink,fluctuating,white,pink,fluctuating
+method,,,,,,
+fixed margin 6 dB,0.746,0.766,0.774,0.16,0.069,0.054
+fixed margin 3 dB,0.779,0.748,0.732,0.127,0.087,0.096
+leading 0.5 s + 6 dB,0.752,0.753,0.77,0.154,0.082,0.058
+spread-based margin,0.881,0.804,0.775,0.025,0.03,0.053
+otsu,0.801,0.777,0.768,0.105,0.058,0.06
+oracle,0.906,0.835,0.828,0.0,0.0,0.0
