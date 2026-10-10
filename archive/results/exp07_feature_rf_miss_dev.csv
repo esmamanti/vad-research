@@ -1,0 +1,8 @@
+features,miss at 5% false alarm
+absolute energy,0.6270582355726235
+relative energy,0.4540612341522437
+relative energy + zcr,0.46900152559314
+relative energy + zcr + spectral,0.397851017938871
+relative energy + zcr + spectral + mfcc,0.2979115155978747
+all (absolute + relative + rest),0.2125966647377558
+no energy (zcr + spectral + mfcc),0.3234125940344047

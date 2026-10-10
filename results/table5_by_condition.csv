@@ -1,0 +1,6 @@
+condition,speech_found,nonspeech_rejected
+clean speech,0.9245,0.9228
+noise only,,0.9991
+speech + noise 0 dB,0.9438,0.5312
+speech + noise 10 dB,0.9181,0.8139
+speech + noise 20 dB,0.9117,0.9239

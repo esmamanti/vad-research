@@ -1,0 +1,13 @@
+question,feature set,n_features,accuracy,balanced_acc,miss_rate,false_alarm
+audio present?,energy only,1,0.9445,0.9472,0.0556,0.0499
+audio present?,7 scalar features,7,0.9509,0.9547,0.0494,0.0412
+audio present?,12 MFCC,12,0.8276,0.8469,0.1737,0.1326
+audio present?,scalar + MFCC,19,0.9555,0.9576,0.0447,0.0401
+audio present?,scalar + context,21,0.9573,0.9631,0.0431,0.0307
+audio present?,scalar + MFCC + context,33,0.962,0.9631,0.0381,0.0358
+speech present?,energy only,1,0.841,0.8523,0.1806,0.1149
+speech present?,7 scalar features,7,0.881,0.8809,0.1189,0.1193
+speech present?,12 MFCC,12,0.7344,0.735,0.2669,0.2631
+speech present?,scalar + MFCC,19,0.8943,0.8909,0.0992,0.119
+speech present?,scalar + context,21,0.9179,0.9175,0.0813,0.0838
+speech present?,scalar + MFCC + context,33,0.9232,0.9225,0.0755,0.0796

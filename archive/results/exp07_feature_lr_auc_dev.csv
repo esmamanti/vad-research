@@ -1,0 +1,8 @@
+features,AUC
+absolute energy,0.8331116334933639
+relative energy,0.8991602046768151
+relative energy + zcr,0.9041831476946331
+relative energy + zcr + spectral,0.8860802488468515
+relative energy + zcr + spectral + mfcc,0.8993068813612143
+all (absolute + relative + rest),0.913745412334902
+no energy (zcr + spectral + mfcc),0.8135302001764904

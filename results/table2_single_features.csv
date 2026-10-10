@@ -1,0 +1,15 @@
+question,feature,accuracy,balanced_acc,miss_rate,false_alarm,threshold,rule
+audio present?,energy_db,0.9312,0.9449,0.0697,0.0405,-36.6156,above = yes
+audio present?,zcr,0.8018,0.6353,0.1868,0.5426,0.1303,below = yes
+audio present?,centroid,0.7406,0.792,0.2629,0.1531,1401.3792,below = yes
+audio present?,flatness,0.7386,0.7916,0.265,0.1517,0.0126,below = yes
+audio present?,flux,0.6117,0.5355,0.3831,0.5458,0.0696,above = yes
+audio present?,band_ratio,0.7415,0.5984,0.2487,0.5545,0.1562,above = yes
+audio present?,harmonicity,0.3623,0.6001,0.6541,0.1456,0.4248,above = yes
+speech present?,energy_db,0.8483,0.8551,0.1647,0.125,-28.3016,above = yes
+speech present?,zcr,0.6777,0.6104,0.1933,0.5859,0.0351,above = yes
+speech present?,centroid,0.7488,0.6593,0.0795,0.6019,517.5547,above = yes
+speech present?,flatness,0.7386,0.6413,0.0747,0.6428,0.0003,above = yes
+speech present?,flux,0.6028,0.6504,0.4884,0.2107,0.0716,below = yes
+speech present?,band_ratio,0.63,0.5377,0.193,0.7317,0.7237,below = yes
+speech present?,harmonicity,0.6645,0.7249,0.4512,0.099,0.3751,above = yes

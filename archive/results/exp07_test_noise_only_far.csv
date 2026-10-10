@@ -1,0 +1,8 @@
+model,false_alarm_rate
+"LR, clean only",0.0117117117117117
+"LR, noise-aware",0.0205705705705705
+"RF, clean only",0.2608608608608608
+"RF, noise-aware",0.0195445445445445
+"RF, noise-aware, no absolute energy",0.0297547547547547
+robust threshold + hangover 200 ms,0.9504004004004004
+WebRTC VAD (mode 2),0.8205955955955956
