@@ -1,0 +1,8 @@
+feature group,n features,audio detection,speech detection,false alarm in 0 dB pauses
+energy only,1,0.9472,0.8523,0.9981
+energy + zcr (Rabiner-Sambur idea),2,0.9489,0.8535,0.9983
+time domain (8),8,0.9586,0.8743,0.7146
+time domain + context (24),24,0.9617,0.9191,0.4187
+frequency domain + MFCC (16),16,0.8633,0.7521,0.2062
+frequency domain + MFCC + context (24),24,0.8921,0.8493,0.0632
+all (48),48,0.9656,0.9262,0.4129

@@ -1,0 +1,7 @@
+model,training data,"false alarm, bright noise","false alarm, other noise",speech found,"speech detection, whole test set"
+logistic regression,1. original train,0.934,0.3169,0.9339,0.9262
+gradient boosting,1. original train,0.899,0.2325,0.9399,0.9334
+logistic regression,2. + all extra noise,0.76,0.3125,0.9204,0.9258
+gradient boosting,2. + all extra noise,0.395,0.2349,0.9218,0.9398
+logistic regression,3. + extra noise without the bright ones,0.937,0.332,0.9393,0.9265
+gradient boosting,3. + extra noise without the bright ones,0.915,0.2296,0.9354,0.9373

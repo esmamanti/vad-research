@@ -1,0 +1,6 @@
+condition,linear: speech found,linear: non-speech rejected,trees: speech found,trees: non-speech rejected
+clean speech,0.926,0.9225,0.9433,0.9236
+speech + noise 20 dB,0.9143,0.9315,0.9376,0.916
+speech + noise 10 dB,0.9198,0.8351,0.9433,0.7945
+speech + noise 0 dB,0.9339,0.5871,0.9399,0.6638
+noise only,,0.9996,,0.991

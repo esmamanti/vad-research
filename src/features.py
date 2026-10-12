@@ -22,6 +22,12 @@ SCALAR_FEATURES = ["energy_db", "zcr", "centroid", "flatness", "flux", "band_rat
 MFCC_FEATURES = [f"mfcc{i}" for i in range(1, 13)]
 CONTEXT_FEATURES = [f"{name}_{stat}" for name in SCALAR_FEATURES for stat in ("mean", "std")]
 
+# Extra time-domain features (notebook 05). Time domain = computed on the waveform samples, no spectrum.
+EXTRA_TIME_FEATURES = ["magnitude_db", "teager_db", "energy_entropy", "amdf_periodicity", "pitch_hz"]
+TIME_FEATURES = ["energy_db", "magnitude_db", "teager_db", "zcr", "energy_entropy",
+                 "harmonicity", "amdf_periodicity", "pitch_hz"]
+TIME_CONTEXT_FEATURES = [f"{name}_{stat}" for name in TIME_FEATURES for stat in ("mean", "std")]
+
 
 def split_into_frames(y):
     """Cut a 1-D signal into overlapping frames. Result shape: (number of frames, FRAME)."""
@@ -94,6 +100,49 @@ def harmonicity(frames):
     return autocorr[:, shortest:longest + 1].max(axis=1) / (autocorr[:, 0] + EPS)
 
 
+def magnitude_db(frames):
+    """Short-time average magnitude: mean of the ABSOLUTE sample values, in dB.
+    Like energy, but without squaring, so a few very large samples count less."""
+    return 20 * np.log10(np.mean(np.abs(frames), axis=1) + EPS)
+
+
+def teager_db(frames):
+    """Teager energy: mean of x[n]^2 - x[n-1] * x[n+1], in dB.
+    It grows with loudness AND with frequency, and reacts quickly to changes."""
+    teager = frames[:, 1:-1] ** 2 - frames[:, :-2] * frames[:, 2:]
+    return 10 * np.log10(np.abs(teager.mean(axis=1)) + EPS)
+
+
+def energy_entropy(frames, n_blocks=10):
+    """How evenly the energy is spread over 10 short blocks inside the frame (0 to 1).
+    1 = spread evenly (steady sound), lower = energy concentrated in a few blocks (sudden changes)."""
+    blocks = frames[:, :FRAME // n_blocks * n_blocks].reshape(len(frames), n_blocks, -1)
+    block_energy = (blocks ** 2).sum(axis=2) + EPS
+    share = block_energy / block_energy.sum(axis=1, keepdims=True)
+    return -(share * np.log2(share)).sum(axis=1) / np.log2(n_blocks)
+
+
+def amdf_periodicity(frames):
+    """Pitch strength from the AMDF (average magnitude difference function), 0 to 1.
+    AMDF(k) = mean |x[n] - x[n-k]|. If the wave repeats every k samples, AMDF(k) drops close to 0.
+    We return 1 - (deepest dip / average level) over shifts of 40..200 samples (400..80 Hz)."""
+    shortest, longest = SR // 400, SR // 80
+    amdf = np.stack([np.mean(np.abs(frames[:, k:] - frames[:, :-k]), axis=1)
+                     for k in range(shortest, longest + 1)], axis=1)
+    return 1 - amdf.min(axis=1) / (amdf.mean(axis=1) + EPS)
+
+
+def pitch_hz(frames):
+    """Pitch estimate in Hz: the shift (80..400 Hz range) where the autocorrelation is highest.
+    Only meaningful in voiced speech. In silence and noise the value means nothing:
+    it often sticks to the edge of the range (400 Hz), because the autocorrelation simply falls with the shift."""
+    centred = frames - frames.mean(axis=1, keepdims=True)
+    autocorr = np.fft.irfft(np.abs(np.fft.rfft(centred, n=2 * N_FFT, axis=1)) ** 2, axis=1)
+    shortest, longest = SR // 400, SR // 80
+    best_shift = shortest + autocorr[:, shortest:longest + 1].argmax(axis=1)
+    return SR / best_shift
+
+
 def mel_filterbank(n_filters=26):
     """Triangular filters spaced on the mel scale (dense at low frequencies, like human hearing)."""
     to_mel = lambda hz: 2595 * np.log10(1 + hz / 700)
@@ -136,10 +185,17 @@ def extract_features(y):
     })
     table[MFCC_FEATURES] = mfcc(mag)
 
+    # Extra time-domain features (notebook 05)
+    table["magnitude_db"] = magnitude_db(frames)
+    table["teager_db"] = teager_db(frames)
+    table["energy_entropy"] = energy_entropy(frames)
+    table["amdf_periodicity"] = amdf_periodicity(frames)
+    table["pitch_hz"] = pitch_hz(frames)
+
     # Context features: a single 25 ms frame is very short, so we also describe its neighbourhood.
-    # For every scalar feature we add its average (mean) and how much it varies (std)
+    # For every scalar and time-domain feature we add its average (mean) and how much it varies (std)
     # over the surrounding 31 frames (about 0.3 s).
-    for name in SCALAR_FEATURES:
+    for name in SCALAR_FEATURES + EXTRA_TIME_FEATURES:
         window = table[name].rolling(2 * CONTEXT + 1, center=True, min_periods=1)
         table[f"{name}_mean"] = window.mean()
         table[f"{name}_std"] = window.std().fillna(0)
